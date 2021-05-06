@@ -37,12 +37,22 @@ int main () {
 
         int steps = 0;
         int nAvgX = avgX - 1, pAvgX = avgX + 1;
+        int l = 0;
         for (int i = 0; i < N; i++) {
             if (i == 0) {
                 steps += abs((avgX - people[i].x)) + abs((avgY - people[i].y));
             } else if (people[i].x < avgX) {
                 steps += abs((nAvgX - people[i].x)) + abs((avgY - people[i].y));
                 nAvgX--;
+            } else if (people[i].x == avgX) {
+                if (l % 2 == 0) {
+                    steps += abs((pAvgX - people[i].x)) + abs((avgY - people[i].y));
+                    pAvgX++;
+                } else {
+                    steps += abs((nAvgX - people[i].x)) + abs((avgY - people[i].y));
+                    nAvgX--;
+                }
+                l++;
             } else {
                 steps += abs((pAvgX - people[i].x)) + abs((avgY - people[i].y));
                 pAvgX++;
@@ -83,8 +93,8 @@ void sort(person n[], int s) {
     int i = 0, j = 0, k = 0;
 
     while (i < n1s && j < n2s) {
-        double n1Distance = sqrt(pow(n1[i].x,2 - avgX) + pow(n1[i].y, 2 - avgY));
-        double n2Distance = sqrt(pow(n2[j].x,2 - avgX) + pow(n2[j].y, 2 - avgY));
+        double n1Distance = sqrt(pow(n1[i].x - avgX,2) + pow(n1[i].y - avgY, 2));
+        double n2Distance = sqrt(pow(n2[j].x - avgX,2) + pow(n2[j].y - avgY, 2));
         if (n1Distance > n2Distance) {
             n[k] = n2[j];
             j++;
